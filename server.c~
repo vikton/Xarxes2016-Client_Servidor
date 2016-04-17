@@ -41,7 +41,7 @@
 #define SEND_ACK 0x21
 #define SEND_NACK 0x22
 #define SEND_REJ 0x23
-#define SEND_DATA 0x24
+#define SEND_DETA 0x24
 #define SEND_END 0x25
 
 /*GET CONF*/
@@ -49,7 +49,7 @@
 #define GET_ACK 0x31
 #define GET_NACK 0x32
 #define GET_REJ 0x33
-#define GET_DATA 0x34
+#define GET_DETA 0x34
 #define GET_END 0x35
 
 #define ERROR 0x09
