@@ -1,5 +1,3 @@
-#pylint: disable=C, W0601, W0602, W0613
-
 import time, cons
 import struct, socket, signal
 import os, optparse, sys

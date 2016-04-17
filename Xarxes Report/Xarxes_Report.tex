@@ -7,10 +7,61 @@
 \graphicspath{ {Images/} }
 
 \begin{document}
-\title{Xarxes: Pràctica 1, Programaci\'{o} d\textsc{\char13} aplicacions de xarxa}
-\author{Jordi Ricard Onrubia Palacios}
-\date{\today}
-\maketitle
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+\center % Center everything on the page
+ 
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+\textsc{\LARGE Universitat de Lleida}\\[1.5cm] % Name of your university/college
+\includegraphics{Images/logoUDL.jpg}\\[1cm] % Include a department/university logo - this will require the graphicx package
+\textsc{\Large Enginyeria Informàtica}\\[0.5cm] % Major heading such as course name
+\textsc{\large Xarxes}\\[0.5cm] % Minor heading such as course title
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\HRule \\[0.4cm]
+{ \huge \bfseries Pràctica 1, Programació d’aplicacions de xarxa}\\[0.4cm] % Title of your document
+\HRule \\[1.5cm]
+ 
+%----------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{minipage}{0.4\textwidth}
+\begin{flushleft} \large
+\emph{Author:}\\
+Jordi Ricard Onrubia Palacios % Your name
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.4\textwidth}
+\begin{flushright} \large
+\emph{Professor:} \\
+Enric Guitart % Supervisor's Name
+\end{flushright}
+\end{minipage}\\[4cm]
+
+% If you don't want a supervisor, uncomment the two lines below and remove the section above
+%\Large \emph{Author:}\\
+%John \textsc{Smith}\\[3cm] % Your name
+
+%----------------------------------------------------------------------------------------
+%	DATE SECTION
+%----------------------------------------------------------------------------------------
+
+{\large \today}\\[3cm] % Date, change the \today to a set date if you want to be precise
+
+
+\vfill % Fill the rest of the page with whitespace
+
+\end{titlepage}
 \newpage
 \section*{Resum}
 \justify
@@ -22,13 +73,16 @@
 Programat en Python versió 2.7.10.
 \\\\
 El client és un programa què es comunicarà amb el servidor, inicialment, aquest demana permís per a connectar-se, un cop connectat mantindrà una comunicació temporitzada amb el servidor per tal d'informar de la seva presencia i evitar la desconnexió amb el servidor.
+%Diagrama estats
 \\\\
-A més a més, aquest podrà rebre una sèrie de comandes per tal d'enviar o rebre arxius de configuració.
+A més a més, aquest podrà rebre una sèrie de comandes per tal d'enviar o rebre el seu arxiu de configuració.
 \\\\
 A continuació s'expliquen les funcions que ha de realitzar i la seva resolució.
 
 	\subsection{Registrar-se al servidor}
-Per a la realització del registre caldra omplir la PDU (Protocol Data Unit) amb els camps que s'indiquen a continuació.
+Per a la realització del registre caldra omplir la PDU (Protocol Data Unit) amb els camps que s'indiquen a continuació:
+%IMAGEN PDU
+
 
 
 
@@ -41,6 +95,29 @@ Per a la realització del registre caldra omplir la PDU (Protocol Data Unit) amb
 	\subsection{Manteniment de comunicació amb equips enregistrats }
 	\subsection{Enviament/recepció de arxius de configuració}
 	\subsection{Espera de comandes per consola}
-\section{Apèndix}
+\section{Anexe}
+	\subsection{Problemes i solucions trobats en el desenvolupament}
+		\subsubsection*{Client}
+		\subsection*{Servidor}
+\begin{enumerate}
+\item Si els dos primers ''ALIVES'' la temporització no arriba a agafar el tercer ''ALIVE'' en cas de que fos enviat ja que aquest arriba just en el moment en que el servidor a desconectat al client. La solució ha estat aplicar un temporitzador per tal de que el servidor només comprovi els estats dels clients cada segon en lloc de continuament, a més a més, es permet que el temps en el que tindria que arribar ''l'ALIVE'' sigui més gran que l'especificat, exactament 1 segon més.
+\end{enumerate}
+\newpage
 \section{Referències}
+Importar constants d'un altre fitxer en Python 2.\\
+\url{http://zetcode.com/lang/python/packages/}\\
+Structs en Python 2.\\
+\url{https://docs.python.org/2/library/struct.html}\\
+UDP sockets en Python 2.\\
+\url{https://wiki.python.org/moin/UdpCommunication}\\
+Funcions de la llibreria Time de Python 2.\\	
+\url{https://docs.python.org/2/library/time.html}\\
+TCP sockets en Python 2.\\
+\url{https://wiki.python.org/moin/TcpCommunication}\\
+Signals en Python 2.\\
+\url{https://docs.python.org/2/library/signal.html}\\
+UDP sockets en C.\\
+\url{https://www.cs.rutgers.edu/~pxk/417/notes/sockets/udp.html}\\
+Funcions de la llibreria Time de C.\\
+\url{http://www.cplusplus.com/reference/ctime/}
 \end{document}
