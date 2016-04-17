@@ -1,8 +1,8 @@
 \BOOKMARK [1][-]{section.1}{Client}{}% 1
 \BOOKMARK [2][-]{subsection.1.1}{Registrar-se al servidor}{section.1}% 2
-\BOOKMARK [2][-]{subsection.1.2}{Manteniment de communicaci\363}{section.1}% 3
-\BOOKMARK [2][-]{subsection.1.3}{Esperar comandes per l'enviament/recepci\363 del seu arxiu de configuraci\363}{section.1}% 4
-\BOOKMARK [2][-]{subsection.1.4}{Funcions adicionals}{section.1}% 5
+\BOOKMARK [2][-]{subsection.1.2}{Manteniment de comunicaci\363}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{Enviament/recepci\363 del seu arxiu de configuraci\363}{section.1}% 4
+\BOOKMARK [2][-]{subsection.1.4}{Espera de comandes per consola}{section.1}% 5
 \BOOKMARK [1][-]{section.2}{Servidor}{}% 6
 \BOOKMARK [2][-]{subsection.2.1}{Enregistrament de clients}{section.2}% 7
 \BOOKMARK [2][-]{subsection.2.2}{Manteniment de comunicaci\363 amb equips enregistrats }{section.2}% 8

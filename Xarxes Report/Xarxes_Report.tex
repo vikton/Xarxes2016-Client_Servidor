@@ -76,17 +76,17 @@ Enric Guitart % Supervisor's Name
 \justify
 Programat en: Python versió 2.7.10.
 \\\\
-El client és un programa què es comunicarà amb el servidor, inicialment, aquest demana permís per a connectar-se, un cop connectat mantindrà una comunicació temporitzada amb el servidor per tal d'informar de la seva presencia i evitar la desconnexió amb el servidor.
+El client és un programa què es comunica amb el servidor, inicialment, aquest demana permís per a connectar-se, un cop connectat mantindrà una comunicació temporitzada amb el servidor per tal d'informar de la seva presencia i evitar la desconnexió amb el servidor.
 %Diagrama estats
 \\\\
-A més a més, aquest podrà rebre una sèrie de comandes per tal d'enviar al servidor el seu arxiu de configuració o fer una petició per tal que el servidor li envii el seu arxiu de configuració.
+A més a més, aquest podrà rebre una sèrie de comandes per tal d'enviar al servidor el seu arxiu de configuració o fer una petició per tal que el servidor li enviï el seu arxiu de configuració.
 \\\\
 A continuació s'expliquen les funcions que ha de realitzar i la seva resolució.
 
-	\subsection{Registrar-se al servidor}
+\subsection{Registrar-se al servidor}
 Per a la realització del registre ens caldrà, primerament, crear un socket que utilitzarem per al transport de les PDUs(\textit{Protocol Data Unit}), aquest socket utilitzarà el protocol UDP(\textit{User Datagram Protocol}) per a la comunicació.
 \\\\
-Les PDUs seràn utilitzades per al enviament i recepció de paquets tant en el procés de registre com en el procés de manteniment de comunicació com es veurà més endavant. Per a la realització de la PDU utilitzarem la funció\textit{struct} de Python amb el contingut següent:
+Les PDUs seran utilitzades per a l'enviament i recepció de paquets tant en el procés de registre com en el procés de manteniment de comunicació com es veurà més endavant. Per a la realització de la PDU utilitzarem la funció\textit{struct} de Python amb el contingut següent:
 %%%%%%%%%%%%%
 %%%%%%%%%%%%%
 %%%%%%%%%%%%%
@@ -133,32 +133,130 @@ Valor & Mnemònic & Significat\\
 %%%%%%%%%%%%%
 %%%%%%%%%%%%%
 %%%%%%%%%%%%%
-Aquests paquets són ùnicament correctes en la fase de registre, qualsevol intent de enviament d'aquests paquets en qualsevol altre fase donarà com a resultat una recepció d'un paquet d'error per part del servidor.
+Aquests paquets són únicament correctes en la fase de registre, qualsevol intent d'enviament d'aquests paquets en qualsevol altra fase donarà com a resultat una recepció d'un paquet d'error per part del servidor.
 \\\\
 L'enviament de les PDUs de registre es farà temporitzat
-	\subsection{Manteniment de communicació}
-	\subsection{Esperar comandes per l'enviament/recepció del seu arxiu de configuració}
-	\subsection{Funcions adicionals}
+	\subsection{Manteniment de comunicació}
+	
+	\begin{table}[h]
+\centering
+\def\arraystretch{1.5}
+\begin{tabular}{ c l l }
+\hline
+Valor & Mnemònic & Significat\\
+\hline
+\hline
+0x10 & ALIVE\_REQ & Enviament d'informació ALIVE\\
+0x11 & ALIVE\_ACK & Confirmació de recepció d'informació ALIVE \\
+0x12 & ALIVE\_NACK & Denegació de recepció d'informació ALIVE\\
+0x13 & ALIVE\_REJ & Rebuig de recepció d'informació ALIVE\\
+\hline
+	\end{tabular}
+	\caption{Paquets de Informe ALIVE}
+	\label{tab:PaquetsInformeALIVE}
+\end{table}
+\newpage
+\subsection{Enviament/recepció del seu arxiu de configuració}
+\subsubsection*{Enviament}
+ENVIAMENT
+\begin{table}[h]
 
+\def\arraystretch{1.5}
+\begin{tabular}{ c c c c c c}
+tipus: & unsigned char & char &  char & char & char\\
+\cline{2-6}
+& \multicolumn{1}{|c|}{Tipus Paquet} & \multicolumn{1}{|c|}{Nom Equip} & \multicolumn{1}{|c|}{Adreça MAC} & \multicolumn{1}{|c|}{Nùmero Aleatori} & \multicolumn{1}{|c|}{Dades}\\
+\cline{2-6}
+bytes: & 1 & 7 & 13 & 7 & 150
+	\end{tabular}
+	\caption{PDU Enviament i Recepció}
+	\label{tab:PDUEnvRec}
+\end{table}
+
+\begin{table}[h]
+\centering
+\def\arraystretch{1.5}
+\begin{tabular}{ c l l }
+\hline
+Valor & Mnemònic & Significat\\
+\hline
+\hline
+0x20 & SEND\_FILE & Petició d’enviament d’arxiu de configuració\\
+0x21 & SEND\_ACK & Acceptació de la petició d’enviament d’arxiu de configuració \\
+0x22 & SEND\_NACK & Denegació de la petició d’enviament d’arxiu de configuració\\
+0x23 & SEND\_REJ & Rebuig de la petició d’enviament d’arxiu de configuració\\
+0x24 & SEND\_DATA & Bloc de dades de l’arxiu de configuració\\
+0x25 & SEND\_END & Fi de l’enviament de dades de l’arxiu de configuració\\
+\hline
+	\end{tabular}
+	\caption{Paquets d'enviament d'arxiu de configuració }
+	\label{tab:PaquetsEnviament}
+\end{table}
+
+	\subsubsection*{Recepció}
+RECEPCIO
+\begin{table}[h]
+\centering
+\def\arraystretch{1.5}
+\begin{tabular}{ c l l }
+\hline
+Valor & Mnemònic & Significat\\
+\hline
+\hline
+0x30 & GET\_FILE & Petició de recepció d’arxiu de configuració\\
+0x31 & GET\_ACK & Acceptació de la petició de recepció d’arxiu de configuració \\
+0x32 & GET\_NACK & Denegació de la petició de recepció d’arxiu de configuració\\
+0x33 & GET\_REJ & Rebuig de la petició de recepció d’arxiu de configuració\\
+0x34 & GET\_DATA & Bloc de dades de l’arxiu de configuració\\
+0x35 & GET\_END & Fi de la recepció de dades de l’arxiu de configuració\\
+\hline
+	\end{tabular}
+	\caption{Paquets de recepció d'arxiu de configuració }
+	\label{tab:PaquetsRecepcio}
+\end{table}
+	\subsection{Espera de comandes per consola}
+\begin{itemize}
+\item quit:
+\item send-conf:
+\item get-conf:
+\end{itemize}
+
+
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%
 \newpage
 \section{Servidor}
 Compilat en: Linux versió 4.2.0 gcc versió 5.2.1.\\
 Comanda utilitzada: gcc -ansi -pedantic -Wall.
 \\\\
-El servidor és un programa què permet respondre a les peticions de un client i respondre en concordança.
+El servidor és un programa què permet respondre a les peticions d'un client i respondre en concordança.
 \\\\
-En el nostre cas el servidor registrarà i mantindrà la comunicació amb els clients que estiguin autoritzats i que facin una petició de registre i que tambè mantinguin la comunicació per la seva part, a més a més, el servidor rebrà peticions de enviament i recepció dels arxius de configuració dels clients i se'n carregarà de respondre a ells. Per part pròpia el servidor pot mostrar tots els equips autoritzats amb les seves dades i el seu estat si es demana.
+En el nostre cas el servidor registrarà i mantindrà la comunicació amb els clients que estiguin autoritzats i que facin una petició de registre i que també mantinguin la comunicació per la seva part, a més a més, el servidor rebrà peticions d'enviament i recepció dels arxius de configuració dels clients i se'n carregarà de respondre a ells. Per part pròpia el servidor pot mostrar tots els equips autoritzats amb les seves dades i el seu estat si es demana.
 	\subsection{Enregistrament de clients}
 	\subsection{Manteniment de comunicació amb equips enregistrats }
 	\subsection{Enviament/recepció de arxius de configuració}
 	\subsection{Espera de comandes per consola}
+\begin{itemize}
+\item quit:
+\item list:
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
+\newpage
 \section{Anexe}
 	\subsection{Problemes i solucions trobats en el desenvolupament}
 		\subsubsection*{Client}
+\begin{enumerate}
+\item Bloqueig del programa per part del recvfrom, recvfrom és una funció què s'encarrega de rebre el missatge rebut pel socket, la solució aplicada va ser posar el timeout a 0 fent-la així no bloquejant.
+\item Senyal SIGTERM ignorada, la solució aplicada va ser enviarl-la continuament amb un bucle infinit.
+\item Llançament de excepcions per part de Python a l'hora de detectar per teclar un ctrl-c, ls solució aplicada va ser tractar la lectura del teclat amb un try except ignorant les interrupcions de teclat.
+\end{enumerate}
 		\subsection*{Servidor}
 \begin{enumerate}
-\item Problema de accedir i actualitzar les dades dels clients des de altres processos. La solució ha estat fer un mmap utilitzant la llibreria sys/man.h. 
-\item Si els dos primers ''ALIVES'' la temporització no arriba a agafar el tercer ''ALIVE'' en cas de que fos enviat ja que aquest arriba just en el moment en que el servidor a desconectat al client. La solució ha estat aplicar un temporitzador per tal de que el servidor només comprovi els estats dels clients cada segon en lloc de continuament, a més a més, es permet que el temps en el que tindria que arribar ''l'ALIVE'' sigui més gran que l'especificat, exactament 1 segon més.
+\item Problema d'accedir i actualitzar les dades dels clients des d'altres processos. La solució ha estat fer un mmap utilitzant la llibreria sys/man.h.
+\item Si els dos primers ''ALIVES'' la temporització no arriba a agafar el tercer ''ALIVE'' en cas de què fos enviat, ja que aquest arriba just en el moment en què el servidor a desconnectat al client. La solució ha estat aplicar un temporitzador per tal de què el servidor només comprovi els estats dels clients cada segon en lloc de continuament, a més a més, es permet que el temps en què haguera d'arribar ''l'ALIVE'' sigui més gran que l'especificat, exactament 1 segon més.
 \end{enumerate}
 \newpage
 \section{Referències}
@@ -177,7 +275,7 @@ Signals en Python 2.\\
 UDP sockets en C.\\
 \url{https://www.cs.rutgers.edu/~pxk/417/notes/sockets/udp.html}\\
 Compartir memória en C.\\
-\url{http://man7.org/linux/man-pages/man2/mmap.2.html}
+\url{http://man7.org/linux/man-pages/man2/mmap.2.html}\\
 Funcions de la llibreria Time de C.\\
 \url{http://www.cplusplus.com/reference/ctime/}
 \end{document}
