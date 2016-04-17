@@ -1,0 +1,13 @@
+\select@language {catalan}
+\contentsline {section}{\numberline {1}Client}{4}{section.1}
+\contentsline {subsection}{\numberline {1.1}Registrar-se al servidor}{4}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Manteniment de communicaci\IeC {\'o}}{4}{subsection.1.2}
+\contentsline {subsection}{\numberline {1.3}Esperar comandes per l'enviament/recepci\IeC {\'o} del seu arxiu de configuraci\IeC {\'o}}{4}{subsection.1.3}
+\contentsline {subsection}{\numberline {1.4}Funcions adicionals}{4}{subsection.1.4}
+\contentsline {section}{\numberline {2}Servidor}{4}{section.2}
+\contentsline {subsection}{\numberline {2.1}Enregistrament de clinets}{4}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Manteniment de comunicaci\IeC {\'o} amb equips enregistrats }{4}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Enviament/recepci\IeC {\'o} de arxius de configuraci\IeC {\'o}}{4}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Espera de comandes per consola}{4}{subsection.2.4}
+\contentsline {section}{\numberline {3}Ap\IeC {\`e}ndix}{4}{section.3}
+\contentsline {section}{\numberline {4}Refer\IeC {\`e}ncies}{4}{section.4}
