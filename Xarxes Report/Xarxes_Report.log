@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.2.24)  17 APR 2016 22:25
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.2.24)  18 APR 2016 23:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -497,7 +497,7 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-<Images/logoUDL.jpg, id=56, 126.70961pt x 67.1485pt>
+<Images/logoUDL.jpg, id=32, 126.70961pt x 67.1485pt>
 File: Images/logoUDL.jpg Graphic file (type jpg)
  <use Images/logoUDL.jpg>
 Package pdftex.def Info: Images/logoUDL.jpg used on input line 23.
@@ -516,33 +516,25 @@ eX warning (ext4): destination with the same identifier (name{page.1}) has been
  already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.67 \newpage
+l.70 \newpage
               [1] (./Xarxes_Report.toc)
 \tf@toc=\write4
 \openout4 = `Xarxes_Report.toc'.
 
  [2]
-Underfull \hbox (badness 10000) in paragraph at lines 77--85
+<Images/UDP_diagram.png, id=60, 710.655pt x 629.35126pt>
+File: Images/UDP_diagram.png Graphic file (type png)
+
+<use Images/UDP_diagram.png>
+Package pdftex.def Info: Images/UDP_diagram.png used on input line 83.
+(pdftex.def)             Requested size: 288.0011pt x 255.05872pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 91--93
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 77--85
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 77--85
-
- []
-
-
-Overfull \hbox (37.0086pt too wide) in paragraph at lines 96--103
-[][] 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 87--109
+Underfull \hbox (badness 10000) in paragraph at lines 91--93
 
  []
 
@@ -550,93 +542,58 @@ pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.109 \newpage
-               [1
+l.93 \newpage
+              [1
 
-]
-Underfull \hbox (badness 10000) in paragraph at lines 110--139
+ <./Images/UDP_diagram.png>]
+<Images/Client.png, id=65, 900.36375pt x 1604.99625pt>
+File: Images/Client.png Graphic file (type png)
+ <use Images/Client.png>
+Package pdftex.def Info: Images/Client.png used on input line 96.
+(pdftex.def)             Requested size: 288.0011pt x 513.38889pt.
 
- []
+
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.158 \newpage
-               [2]
-Overfull \hbox (37.0086pt too wide) in paragraph at lines 165--172
-[][] 
- []
-
-
-Overfull \hbox (57.20033pt too wide) in paragraph at lines 179--192
- [][] 
- []
-
-
-Overfull \hbox (46.20468pt too wide) in paragraph at lines 201--214
- [][] 
- []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 219.
-
-(/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
-File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-)
-LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 219.
- [3]
-Underfull \hbox (badness 10000) in paragraph at lines 230--236
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 230--236
-
- []
-
-[4] [5]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 281.
- [6]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 281.
+l.107 \newpage
+               [2] [3]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 141.
+ [4] [5 <./Images/Client.png>]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 141.
  (./Xarxes_Report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 281.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 281.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 141.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 141.
+Package rerunfilecheck Info: File `Xarxes_Report.out' has not changed.
+(rerunfilecheck)             Checksum: 7FCFBB7BA4679564830A9420608DD841;367.
 
 
-Package rerunfilecheck Warning: File `Xarxes_Report.out' has changed.
-(rerunfilecheck)                Rerun to get outlines right
-(rerunfilecheck)                or use package `bookmark'.
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
-Package rerunfilecheck Info: Checksums for `Xarxes_Report.out':
-(rerunfilecheck)             Before: 69D6C1DC69484BCA4A61F18CA394E27F;978
-(rerunfilecheck)             After:  D610639CA56B377F7AC85D0BDBA0D694;965.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 281.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 141.
  ) 
 Here is how much of TeX's memory you used:
- 5909 strings out of 493085
- 85809 string characters out of 6136917
- 176452 words of memory out of 5000000
- 9301 multiletter control sequences out of 15000+600000
- 10568 words of font info for 37 fonts, out of 8000000 for 9000
+ 5874 strings out of 493085
+ 85331 string characters out of 6136917
+ 173213 words of memory out of 5000000
+ 9280 multiletter control sequences out of 15000+600000
+ 10222 words of font info for 36 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 29i,9n,28p,528b,407s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 29i,6n,28p,528b,407s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/tex
 live/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/te
 xmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/font
-s/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type
-1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
-ic/amsfonts/cm/cmtt10.pfb>
-Output written on Xarxes_Report.pdf (9 pages, 176995 bytes).
+t/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/cm/cmtt10.pfb>
+Output written on Xarxes_Report.pdf (8 pages, 322443 bytes).
 PDF statistics:
- 184 PDF objects out of 1000 (max. 8388607)
- 161 compressed objects within 2 object streams
- 37 named destinations out of 1000 (max. 500000)
- 110 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 132 PDF objects out of 1000 (max. 8388607)
+ 110 compressed objects within 2 object streams
+ 24 named destinations out of 1000 (max. 500000)
+ 72 words of extra memory for PDF output out of 10000 (max. 10000000)
 
