@@ -1,3 +1,5 @@
 \select@language {catalan}
 \contentsline {figure}{\numberline {1}{\ignorespaces Protocol UDP}}{1}{figure.1}
-\contentsline {figure}{\numberline {2}{\ignorespaces Client}}{3}{figure.2}
+\contentsline {figure}{\numberline {2}{\ignorespaces Client: Protocol TCP}}{2}{figure.2}
+\contentsline {figure}{\numberline {3}{\ignorespaces Client}}{4}{figure.3}
+\contentsline {figure}{\numberline {4}{\ignorespaces Servidor: Protocol TCP}}{5}{figure.4}

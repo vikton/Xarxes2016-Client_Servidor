@@ -157,7 +157,7 @@ def AliveTreatment(reply):
                 signal.signal(signal.SIGTERM,handler)
                 #recepcio del paquet del servidor
                 msg = struct.unpack(cons.PDU_FORM, socudp.recvfrom(recPort)[0])
-                debugMode("Enviat Paquet amb ALIVE")
+
                 resp, timer = sendAlive(resp, timer, comPDU)
                 #comprovacio del paquet rebut
                 if msg[0] == cons.ALIVE_ACK and cmp(reply[1:4],msg[1:4]) == 0:
@@ -167,6 +167,7 @@ def AliveTreatment(reply):
                         debugMode("Primer ALIVE rebut passem a estat ALIVE")
                         actState("ALIVE")
                         first = True
+                    debugMode("Paquet rebut: " + "Tipus paquet: " + str(msg[0]) + " Nom: " + str(msg[1]) + " MAC: " + str(msg[2]) + " Aleatori " + str(msg[3]) + " Dades: " +  "")
                 #si el paquet es un rebug finalitzem proces
                 elif msg[0] == cons.ALIVE_REJ:
                     debugMode("Rebut rebuig de paquet")
@@ -177,10 +178,7 @@ def AliveTreatment(reply):
 
                 signal.signal(signal.SIGTERM,handler)
             except socket.error:
-                debugMode("Rebut error de paquet")
-                debugMode("Paquet rebut: " + "Tipus paquet: " + str(msg[0]) + " Nom: " + str(msg[1]) + " MAC: " + str(msg[2]) + " Aleatori " + str(msg[3]) + " Dades: " + str(msg[4]))
                 signal.signal(signal.SIGTERM,handler)
-                debugMode("Enviat Paquet amb ALIVE")
                 resp, timer = sendAlive(resp, timer, comPDU)
         #si el servidor no contesta tanquem proces
         else:
@@ -208,6 +206,7 @@ def handler(signum,frame):
 def sendAlive(resp, timer, comPDU):
     #enviment d'alives segons temporitzador
     if time.time() - timer >= cons.SND_TM:
+        debugMode("Enviat Paquet ALIVE")
         socudp.sendto(comPDU, (ip, int(port)))
         #en cas de enviament increment de numero de enviades per portar control
         #i actualitzacio del temporitzador
@@ -227,8 +226,8 @@ def KeyboardCommand(reply):
 
             #tancament de tots els processos en cas de quit
             if com == cons.QUIT:
+                debugMode("Rebut quit, finalitzant client")
                 while True:
-                    debugMode("Rebut quit, finalitzant client")
                     os.kill(os.getppid(),signal.SIGTERM)
                     #enviament de configuracio en cas de send
             elif com == cons.SEND:
@@ -321,7 +320,7 @@ def getConf(reply):
             #tractament de les dades rebudes
             while msg[0] != cons.GET_END:
                 msg = struct.unpack(cons.TCP_FORM, soctcp.recv(cons.SIZETCP))
-                debugMode("Paquet rebut: " + "Tipus paquet: " + str(msg[0]) + " Nom: " + str(msg[1]) + " MAC: " + str(msg[2]) + " Aleatori " + str(msg[3]) + " Dades: " + str(msg[4]))
+                debugMode("Paquet rebut: " + "Tipus paquet: " + str(msg[0]) + " Nom: " + str(msg[1]) + " MAC: " + str(msg[2]) + " Aleatori " + str(msg[3]) + " Dades: " + str(msg[4].split('\n')[0] + '\n'))
                 if msg[0] == cons.GET_DATA:
                     prefile.append(msg[4].split('\n')[0] + '\n')
 
@@ -399,7 +398,7 @@ def closeConnection():
 #MODE DEBUG
 def debugMode(toPrint):
     if options.verbose == True:
-        print time.strftime('%X') + ' ' + toPrint
+        print time.strftime('%X') + ' ' + "[DEBUG]->" + ' ' + toPrint
 
 if __name__ == '__main__':
     #parseig de les comandes rebudes a la hroa de la crida
