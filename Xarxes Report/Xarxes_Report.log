@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.2.24)  22 APR 2016 12:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2016.2.24)  22 APR 2016 13:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -533,58 +533,78 @@ l.71 \newpage
 File: Images/UDP_diagram.png Graphic file (type png)
 
 <use Images/UDP_diagram.png>
-Package pdftex.def Info: Images/UDP_diagram.png used on input line 84.
+Package pdftex.def Info: Images/UDP_diagram.png used on input line 87.
 (pdftex.def)             Requested size: 288.0011pt x 186.37283pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 82--91
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 82--91
+
+ []
+
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.88 \newpage
+l.91 \newpage
               [1
 
  <./Images/UDP_diagram.png>]
-<Images/clientTCP.png, id=90, 683.55376pt x 446.66875pt>
+<Images/clientTCP.png, id=91, 683.55376pt x 446.66875pt>
 File: Images/clientTCP.png Graphic file (type png)
 
 <use Images/clientTCP.png>
-Package pdftex.def Info: Images/clientTCP.png used on input line 92.
+Package pdftex.def Info: Images/clientTCP.png used on input line 99.
 (pdftex.def)             Requested size: 288.0011pt x 188.19936pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 93--103
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 93--103
+
+ []
+
 pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.96 \newpage
-              [2 <./Images/clientTCP.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 99--101
+l.103 \newpage
+               [2 <./Images/clientTCP.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 106--108
 
  []
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <9> on input line 104.
+(Font)              <9> on input line 111.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 104.
+(Font)              <5> on input line 111.
 
-Underfull \hbox (badness 10000) in paragraph at lines 102--105
+Underfull \hbox (badness 10000) in paragraph at lines 109--112
 
  []
 
-<Images/Client.png, id=97, 934.49126pt x 1665.22125pt>
+<Images/Client.png, id=98, 934.49126pt x 1665.22125pt>
 File: Images/Client.png Graphic file (type png)
  <use Images/Client.png>
-Package pdftex.def Info: Images/Client.png used on input line 112.
+Package pdftex.def Info: Images/Client.png used on input line 119.
 (pdftex.def)             Requested size: 288.0011pt x 513.21497pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 106--117
+Underfull \hbox (badness 10000) in paragraph at lines 113--124
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 106--117
+Underfull \hbox (badness 10000) in paragraph at lines 113--124
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 106--117
+Underfull \hbox (badness 10000) in paragraph at lines 113--124
 
  []
 
@@ -592,32 +612,32 @@ Underfull \hbox (badness 10000) in paragraph at lines 106--117
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 [3] [4 <./Images/Client.png>]
-<Images/ServidorTCP.png, id=115, 919.435pt x 647.41875pt>
+<Images/ServidorTCP.png, id=116, 919.435pt x 647.41875pt>
 File: Images/ServidorTCP.png Graphic file (type png)
 
 <use Images/ServidorTCP.png>
-Package pdftex.def Info: Images/ServidorTCP.png used on input line 125.
+Package pdftex.def Info: Images/ServidorTCP.png used on input line 132.
 (pdftex.def)             Requested size: 288.0011pt x 202.79204pt.
  [5
 
  <./Images/ServidorTCP.png>]
-<Images/server.png, id=121, 805.0075pt x 846.16125pt>
+<Images/server.png, id=122, 805.0075pt x 846.16125pt>
 File: Images/server.png Graphic file (type png)
  <use Images/server.png>
-Package pdftex.def Info: Images/server.png used on input line 134.
+Package pdftex.def Info: Images/server.png used on input line 141.
 (pdftex.def)             Requested size: 288.0011pt x 302.71985pt.
 
 [6 <./Images/server.png>]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 147.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 154.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 147.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 154.
 
-Overfull \hbox (27.43153pt too wide) in paragraph at lines 166--167
+Overfull \hbox (27.43153pt too wide) in paragraph at lines 173--174
 []\OT1/cmr/m/n/10.95 Senyal SIG-TERM ig-no-ra-da, la so-lu-ci^^So apli-ca-da va
  ser enviar-la cont^^S^^Pnuament
  []
@@ -627,27 +647,27 @@ Overfull \hbox (27.43153pt too wide) in paragraph at lines 166--167
 \openout5 = `Xarxes_Report.lof'.
 
  [8]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 198.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 205.
 
-Underfull \hbox (badness 10000) in paragraph at lines 178--198
+Underfull \hbox (badness 10000) in paragraph at lines 185--205
 
  []
 
 [9]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 198.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 205.
  (./Xarxes_Report.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 198.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 198.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 205.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 205.
 Package rerunfilecheck Info: File `Xarxes_Report.out' has not changed.
-(rerunfilecheck)             Checksum: 22FEB77EE685D6F512120033DD0E160C;688.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 198.
+(rerunfilecheck)             Checksum: E6C280A1F2355F90C3D6F958971F00BA;702.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 205.
  ) 
 Here is how much of TeX's memory you used:
- 5964 strings out of 493085
- 86704 string characters out of 6136917
+ 5966 strings out of 493085
+ 86738 string characters out of 6136917
  175840 words of memory out of 5000000
- 9337 multiletter control sequences out of 15000+600000
- 11134 words of font info for 39 fonts, out of 8000000 for 9000
+ 9338 multiletter control sequences out of 15000+600000
+ 11480 words of font info for 40 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  29i,8n,28p,528b,423s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></us
@@ -659,12 +679,13 @@ t/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/
 type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
 blic/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
 fonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmt
-t10.pfb>
-Output written on Xarxes_Report.pdf (12 pages, 570454 bytes).
+cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmt
+i12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pf
+b>
+Output written on Xarxes_Report.pdf (12 pages, 580609 bytes).
 PDF statistics:
- 215 PDF objects out of 1000 (max. 8388607)
- 182 compressed objects within 2 object streams
+ 219 PDF objects out of 1000 (max. 8388607)
+ 185 compressed objects within 2 object streams
  42 named destinations out of 1000 (max. 500000)
  127 words of extra memory for PDF output out of 10000 (max. 10000000)
 

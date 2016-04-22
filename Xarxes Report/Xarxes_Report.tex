@@ -78,7 +78,10 @@ En el següent document es troba la informació necessària per a comprendre el 
 \clearpage
 \pagenumbering{arabic}
 \section{Client}
-\subsection{Protocol UDP}
+\subsection{Protocol UDP}	
+El protocol UDP(\textit{User Datagram Protocol}) en la fase del client és utilitzat per a establir i mantenir la comunicació entre ell i el servidor, així doncs els estats del client depenen del missatges transmessos per aquest.\\\\
+En la següent figura es mostra un diagrama amb el seu funcionament principal.
+\\\\
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{UDP_diagram.png}
@@ -87,6 +90,10 @@ En el següent document es troba la informació necessària per a comprendre el 
 \end{figure}
 \newpage
 \subsection{Protocol TCP}
+El protocol TCP(\textit{}) es utilitzat per a realitzar el procés de enviament i petició del arxiu de configuració del client cap al servidor.
+\\\\
+En la següent figura es mostra un diagrama amb el seu funcionament principal.
+\\\\
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{clientTCP.png}
@@ -128,7 +135,7 @@ El servidor no utilitza Protocol UDP més que per a controlar els estats del cli
 \end{figure}
 \newpage
 
-\section{Estructura}
+\subsection{Estructura}
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{server.png}
