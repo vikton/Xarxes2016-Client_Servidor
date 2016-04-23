@@ -31,7 +31,7 @@ def treatDataFile():
     global eqp, mac, ip, port
 
     #lectura del fitxer i recollida de dades necessaries.
-    eqp, mac, ip, port = readFile(options.client)
+    eqp, mac, ip, port = readFile(options.client,1)
     eqp = eqp.split()[1]
     mac = mac.split()[1]
     ip = ip.split()[1]
@@ -261,40 +261,41 @@ def sendConf(reply):
 
     #lectura del fitxer a enviar al servidor
     debugMode("Llegit fitxer a enviar")
-    fileLines = readFile(options.file)
-    #calcul del tamany
-    size = os.stat(options.file).st_size
-    data = options.file + "," + str(size)
-    #establiment de temps per a rebre resposta del servidor
-    debugMode("Establert temportizador per a rebre resposta del servidor")
-    soctcp.settimeout(cons.TCP_WAIT)
-    #solicitud de enviament de arxiu de configuracio
-    print time.strftime('%X') + " Solicitud d'enviament d'arxiu de configuracio al servidor (" + options.file + ")"
-    sendPDUTCP(cons.SEND_FILE,data)
+    fileLines = readFile(options.file,2)
+    #nomes es fara l'enviament si el fitxer existeix
+    if cmp(fileLines,"null") != 0:
+        #calcul del tamany
+        size = os.stat(options.file).st_size
+        data = options.file + "," + str(size)
+        #establiment de temps per a rebre resposta del servidor
+        debugMode("Establert temportizador per a rebre resposta del servidor")
+        soctcp.settimeout(cons.TCP_WAIT)
+        #solicitud de enviament de arxiu de configuracio
+        print time.strftime('%X') + " Solicitud d'enviament d'arxiu de configuracio al servidor (" + options.file + ")"
+        sendPDUTCP(cons.SEND_FILE,data)
 
-    try:
-        #recepcio de resposta per part del servidor
-        msg = struct.unpack(cons.TCP_FORM, soctcp.recv(cons.SIZETCP))
-        debugMode("Resposta rebuda iniciant comprovacio de camps")
-        #comprovacio de camps correctes
-        if msg[0] == cons.SEND_ACK and (cmp(reply[1:4],msg[1:4]) == 0):
-            #enviament de linies de l'arxiu de configuracio
-            debugMode("Camps Correctes enviament de fitxer")
-            for l in fileLines:
-                sendPDUTCP(cons.SEND_DATA,l)
-            #linia final
-            sendPDUTCP(cons.SEND_END,"")
+        try:
+            #recepcio de resposta per part del servidor
+            msg = struct.unpack(cons.TCP_FORM, soctcp.recv(cons.SIZETCP))
+            debugMode("Resposta rebuda iniciant comprovacio de camps")
+            #comprovacio de camps correctes
+            if msg[0] == cons.SEND_ACK and (cmp(reply[1:4],msg[1:4]) == 0):
+                #enviament de linies de l'arxiu de configuracio
+                debugMode("Camps Correctes enviament de fitxer")
+                for l in fileLines:
+                    sendPDUTCP(cons.SEND_DATA,l)
+                #linia final
+                sendPDUTCP(cons.SEND_END,"")
 
-            print time.strftime('%X') + " Finalitzat enviament d'arxiu de configuracio al servidor (" + options.file + ")"
-        else:
-            print time.strftime('%X') + " Abortat enviament d'arxiu de configuracio al servidor (" + options.file + ")"
-            print time.strftime('%X') + " Camps de la PDU Incorrectes"
+                print time.strftime('%X') + " Finalitzat enviament d'arxiu de configuracio al servidor (" + options.file + ")"
+            else:
+                print time.strftime('%X') + " Abortat enviament d'arxiu de configuracio al servidor (" + options.file + ")"
+                print time.strftime('%X') + " Camps de la PDU Incorrectes"
 
 
-    except socket.error:
-        #tancament de socket en cas de no rebre resposta
-        print time.strftime('%X') + " No hi ha resposta per part del servidor: send-conf"
-        closeTCPCON()
+        except socket.error:
+            #tancament de socket en cas de no rebre resposta
+            print time.strftime('%X') + " No hi ha resposta per part del servidor: send-conf"
 
 #DEMANAR CONFIGURACIO AL SERVIDOR
 def getConf(reply):
@@ -325,7 +326,7 @@ def getConf(reply):
                     prefile.append(msg[4].split('\n')[0] + '\n')
 
             if msg[0] == cons.GET_END:
-                f = open(options.file,"w")
+                f = open(options.file,"w+")
                 for l in prefile:
                     f.write(l)
                 f.close()
@@ -338,7 +339,6 @@ def getConf(reply):
     except:
         #en cas de no resposta per part del servidor es tanca la conexio
         print time.strftime('%X') +  " No hi ha resposta per part del servidor: get-conf"
-        closeTCPCON()
 
 #OBRIR CONEXIO TCP
 def openTCPCon(reply):
@@ -380,13 +380,21 @@ def actState(st):
     print time.strftime('%X') + " Client passa a l'estat: " + state
 
 #LLEGIR DEL FITXER
-def readFile(fileToRead):
+def readFile(fileToRead, i):
     #lectura del fitxer i retorn del contingut
-    f = open(fileToRead, "r")
-    lines = f.readlines()
-    f.close()
+    try:
+        f = open(fileToRead, "r")
 
-    return lines
+        lines = f.readlines()
+        f.close()
+
+        return lines
+    except IOError:
+        print time.strftime('%X') + " No es pot localitzar el fitxer"
+        if i == 1:
+            sys.exit()
+        else:
+            return "null"
 
 #TANCA CONEXIO UDP
 def closeConnection():

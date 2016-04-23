@@ -90,7 +90,9 @@ struct PDU_TCP{
 struct PCREG *registres[NUMCOMPUTERS];
 int pidWork, pidAlives, pidMsg;
 struct SERVINFO serverInfo;
-
+int debug;
+char servFile[15] = "server.cfg\0";
+char autorized[15] = "equips.dat\0";
 
 ssize_t getline(char **lineptr, size_t *n, FILE *stream);
 void work(int udpSocket, struct SERVINFO serverInfo, int lines);
@@ -117,31 +119,70 @@ int main(int argc, char *argv[]){
   char input[5];
   char estat[12];
 
+  /*Reserva de espai de memória compartida per a la taula de clients*/
   for(i=0;i<NUMCOMPUTERS;i++){
  	  registres[i] = (struct PCREG *)mmap(0, sizeof(*registres[NUMCOMPUTERS]), PROT_READ|PROT_WRITE, MAP_SHARED|MAP_ANONYMOUS, -1, 0);
   }
 
+  /*Parse de linea de comandes*/
+  if(argc > 1){
+    for(i=1;i < argc; i++){
+      /*Parserd mode debug*/
+      if(strcmp(argv[i],"-d") == 0){
+        debug = 1;
+        printf("Mode debug activat\n");
+      }
+      if(strcmp(argv[i],"-c") == 0){
+        /*Parser fitxer arrancada de servidor*/
+        if(i+1 < argc){
+          sprintf(servFile,"%s", argv[i+1]);
+          printf("Realitzat canvi en el fitxer de arrancada de servidor\n");
+        }else{
+          printf("Detectat -c pero cap nom darrera per defecte el fitxer de arrancada és server.cfg\n");
+        }
+      }
+      if(strcmp(argv[i],"-u") == 0){
+        /*Parser fitxer equips autoritzats*/
+        if(i+1 < argc){
+          sprintf(autorized,"%s", argv[i+1]);
+          printf("Realitzat canvi en el fitxer d'equips autoritzats\n");
+        }else{
+          printf("Detectat -u però cap nom darrera per defecte el fitxer d'equips autoritzats és equips.dat\n");
+        }
+      }
+    }
+  }
+
+  /*Lectura del fitxer d'informació del servidor*/
   readServInfo(&serverInfo);
+  /*Lectura del fitxer de equips permesos*/
   lines = readPermitedComputers();
 
   pidWork = fork();
   if(pidWork == 0){
-
+    if(debug == 1){
+      printf("[DEBUG] -> Preparat procés per a rebre peticions TCP/UDP\n");
+    }
     udpSocket = createUDPSocket();
 
-    printf("Preparat per a rebre regitres:\n");
+    printf("[DEBUG] -> Preparat per a rebre regitres:\n");
     work(udpSocket,serverInfo,lines);
 
     exit(0);
   } else{
+    if(debug == 1){
+      printf("[DEBUG] -> Preparat procés per a rebre comandes\n");
+    }
     while(1){
       scanf("%s",input);
 
       if(strcmp(input,QUIT) == 0){
+        /*Fi del programa*/
         kill(pidWork,SIGTERM);
         return 0;
       }
       else if(strcmp(input,LIST) == 0){
+        /*Mostra dels estats dels equips autoritzats*/
         for(i=0;i<lines;i++){
           if(registres[i] -> estat == 0){
             sprintf(estat,"%s","DISCONNECTED");
@@ -206,6 +247,9 @@ void work(int udpSocket, struct SERVINFO serverInfo, int lines){
             /*Procés per gestionar registres*/
             if(pid == 0){
               printf("Rebut registre de %s\n",recvPDU.nomEquip);
+              if(debug == 1){
+                printf("[DEBUG] -> REBUT: NOM: %s  MAC: %s ALEA: %s  DADES: %s\n",recvPDU.nomEquip, recvPDU.adresaMac,recvPDU.numAleat,recvPDU.Dades);
+              }
               request(udpSocket, lines, recvPDU,  udpRecvAdress, serverInfo);
               exit(0);
             }
@@ -277,6 +321,10 @@ void work(int udpSocket, struct SERVINFO serverInfo, int lines){
                     makeTCPPDU(SEND_NACK, serverInfo, &send_tcp, recvPDU.numAleat, noAuto);
                     /*Enviem la PDU amb l'error*/
                     sendto(newTCPSock, &send_tcp, BUFSIZETCP,0, (struct sockaddr *)&tcpRecvAdress, addrlentcp);
+                    if(debug == 1){
+                      printf("[DEBUG] -> REBUT: NOM: %s  MAC: %s ALEA: %s  DADES: %s\n",recv_tcp.nomEquip, recv_tcp.adresaMac,recv_tcp.numAleat,recv_tcp.Dades);
+                      printf("[DEBUG] -> ENVIAT: PAQUET: ALIVE_REJ NOM: %s  MAC: %s ALEA: %s  DADES: %s\n",send_tcp.nomEquip, send_tcp.adresaMac,send_tcp.numAleat,send_tcp.Dades);
+                    }
                     close(newTCPSock);
                     exit(0);
                   }
@@ -379,24 +427,28 @@ void makeUDPPDU(unsigned char sign,struct SERVINFO serverInfo, struct PDU_UDP *s
 void readServInfo(struct SERVINFO *serverInfo){
   FILE *f;
   char ignore[5];
-  f = fopen("server.cfg", "r");
+  f = fopen(servFile, "r");
+  if(f == NULL){
+    printf("El fitxer no existeix");
+    exit(0);
+  }else{
+    /*Llegir la informació del servidor*/
+    while(!feof(f)){
+      fscanf(f, "%s %6s",ignore, serverInfo -> nomServ);
+      fscanf(f, "%s %12s",ignore, serverInfo -> MAC);
+      fscanf(f, "%s %5s",ignore, serverInfo -> UDP);
+      fscanf(f, "%s %5s",ignore, serverInfo -> TCP);
+    }
 
-  /*Llegir la informació del servidor*/
-  while(!feof(f)){
-    fscanf(f, "%s %6s",ignore, serverInfo -> nomServ);
-    fscanf(f, "%s %12s",ignore, serverInfo -> MAC);
-    fscanf(f, "%s %5s",ignore, serverInfo -> UDP);
-    fscanf(f, "%s %5s",ignore, serverInfo -> TCP);
+    fclose(f);
   }
-
-  fclose(f);
 }
 
 /*Lleigeix i agafa les dades del fixer de equips autoritzats*/
 int readPermitedComputers(){
   FILE *f;
   int i = 0;
-  f = fopen("equips.dat", "r");
+  f = fopen(autorized, "r");
 
   /*Mentres no arribem a fí de fitxer guardem les dades*/
   while(!feof(f)){
@@ -454,16 +506,20 @@ void aliveResponse(int udpSocket, int lines, struct PDU_UDP recvPDU,  struct soc
   for(i=0; i<lines ;i++){
     /*Si l'equip es correcte i esta ALIVE enviem ALIVE_ACK*/
     if(strcmp(registres[i] -> nomEquip,recvPDU.nomEquip) == 0 && strcmp(registres[i] -> numAleat,recvPDU.numAleat) == 0
-      && strcmp(registres[i] -> adresaMac,recvPDU.adresaMac) == 0 && strcmp(registres[i] -> IP, inet_ntoa(udpRecvAdress.sin_addr)) == 0){
+      && strcmp(registres[i] -> adresaMac,recvPDU.adresaMac) == 0 && strcmp(registres[i] -> IP, inet_ntoa(udpRecvAdress.sin_addr)) == 0
+      && (registres[i] -> estat == STATE_REGIST || registres[i] -> estat == STATE_ALIVE)){
 
       if(registres[i] -> estat == STATE_REGIST){
         registres[i] -> timing = time(NULL);
         registres[i] -> estat = STATE_ALIVE;
 
-
         makeUDPPDU(ALIVE_ACK, serverInfo, &sendPDU, registres[i] -> numAleat , error);
         sendto(udpSocket, &sendPDU, BUFSIZEUDP,0, (struct sockaddr *)&udpRecvAdress, addrlen);
         printf("Confirmacio ALIVE  %s\n",registres[i] ->nomEquip);
+        if(debug == 1){
+          printf("[DEBUG] -> REBUT: NOM: %s  MAC: %s ALEA: %s  DADES: %s\n",recvPDU.nomEquip, recvPDU.adresaMac,recvPDU.numAleat,recvPDU.Dades);
+          printf("[DEBUG] -> ENVIAT: PAQUET: ALIVE_ACK NOM: %s  MAC: %s ALEA: %s  DADES: %s\n",sendPDU.nomEquip, sendPDU.adresaMac,sendPDU.numAleat,sendPDU.Dades);
+        }
 
       }else if (registres[i] -> estat == STATE_ALIVE){
         registres[i] -> timing = time(NULL);
@@ -471,6 +527,10 @@ void aliveResponse(int udpSocket, int lines, struct PDU_UDP recvPDU,  struct soc
         sendto(udpSocket, &sendPDU, BUFSIZEUDP,0, (struct sockaddr *)&udpRecvAdress, addrlen);
 
         printf("Confirmacio ALIVE  %s\n",registres[i] ->nomEquip);
+        if(debug == 1){
+          printf("[DEBUG] -> REBUT: NOM: %s  MAC: %s ALEA: %s  DADES: %s\n",recvPDU.nomEquip, recvPDU.adresaMac,recvPDU.numAleat,recvPDU.Dades);
+          printf("[DEBUG] -> ENVIAT: PAQUET: ALIVE_ACK NOM: %s  MAC: %s ALEA: %s  DADES: %s\n",sendPDU.nomEquip, sendPDU.adresaMac,sendPDU.numAleat,sendPDU.Dades);
+        }
 
       }
       break;
@@ -487,6 +547,10 @@ void aliveResponse(int udpSocket, int lines, struct PDU_UDP recvPDU,  struct soc
 
       makeErrorPDU(ALIVE_REJ,nom, mac, &sendPDU, alea , error);
       sendto(udpSocket, &sendPDU, BUFSIZEUDP,0, (struct sockaddr *)&udpRecvAdress, addrlen);
+      if(debug == 1){
+        printf("[DEBUG] -> REBUT: NOM: %s  MAC: %s ALEA: %s  DADES: %s\n",recvPDU.nomEquip, recvPDU.adresaMac,recvPDU.numAleat,recvPDU.Dades);
+        printf("[DEBUG] -> ENVIAT: PAQUET: ALIVE_ACK NOM: %s  MAC: %s ALEA: %s  DADES: %s\n",sendPDU.nomEquip, sendPDU.adresaMac,sendPDU.numAleat,sendPDU.Dades);
+      }
       exit(0);
     }
 
@@ -500,6 +564,10 @@ void aliveResponse(int udpSocket, int lines, struct PDU_UDP recvPDU,  struct soc
 
       makeErrorPDU(ALIVE_NACK,nom, mac, &sendPDU, alea , error);
       sendto(udpSocket, &sendPDU, BUFSIZEUDP,0, (struct sockaddr *)&udpRecvAdress, addrlen);
+      if(debug == 1){
+        printf("[DEBUG] -> REBUT: NOM: %s  MAC: %s ALEA: %s  DADES: %s\n",recvPDU.nomEquip, recvPDU.adresaMac,recvPDU.numAleat,recvPDU.Dades);
+        printf("[DEBUG] -> ENVIAT: PAQUET: ALIVE_NACK NOM: %s  MAC: %s ALEA: %s  DADES: %s\n",sendPDU.nomEquip, sendPDU.adresaMac,sendPDU.numAleat,sendPDU.Dades);
+      }
       exit(0);
     }
 
@@ -514,6 +582,10 @@ void aliveResponse(int udpSocket, int lines, struct PDU_UDP recvPDU,  struct soc
 
       makeErrorPDU(ALIVE_NACK,nom, mac, &sendPDU, alea , error);
       sendto(udpSocket, &sendPDU, BUFSIZEUDP,0, (struct sockaddr *)&udpRecvAdress, addrlen);
+      if(debug == 1){
+        printf("[DEBUG] -> REBUT: NOM: %s  MAC: %s ALEA: %s  DADES: %s\n",recvPDU.nomEquip, recvPDU.adresaMac,recvPDU.numAleat,recvPDU.Dades);
+        printf("[DEBUG] -> ENVIAT: PAQUET: ALIVE_NACK NOM: %s  MAC: %s ALEA: %s  DADES: %s\n",sendPDU.nomEquip, sendPDU.adresaMac,sendPDU.numAleat,sendPDU.Dades);
+      }
       exit(0);
     }
 
@@ -528,6 +600,10 @@ void aliveResponse(int udpSocket, int lines, struct PDU_UDP recvPDU,  struct soc
 
       makeErrorPDU(ALIVE_REJ,nom, mac, &sendPDU, alea , error);
       sendto(udpSocket, &sendPDU, BUFSIZEUDP,0, (struct sockaddr *)&udpRecvAdress, addrlen);
+      if(debug == 1){
+        printf("[DEBUG] -> REBUT: NOM: %s  MAC: %s ALEA: %s  DADES: %s\n",recvPDU.nomEquip, recvPDU.adresaMac,recvPDU.numAleat,recvPDU.Dades);
+        printf("[DEBUG] -> ENVIAT: PAQUET: ALIVE_REJ NOM: %s  MAC: %s ALEA: %s  DADES: %s\n",sendPDU.nomEquip, sendPDU.adresaMac,sendPDU.numAleat,sendPDU.Dades);
+      }
       exit(0);
     }
   }
@@ -538,10 +614,12 @@ void aliveResponse(int udpSocket, int lines, struct PDU_UDP recvPDU,  struct soc
     strcpy(mac,"000000000000");
     strcpy(nom,"");
 
-    makeErrorPDU(ALIVE_REJ,nom, mac, &sendPDU, alea , error);
-    sendto(udpSocket, &sendPDU, BUFSIZEUDP,0, (struct sockaddr *)&udpRecvAdress, addrlen);
-    registres[i] -> timing = 0;
+    makeErrorPDU(ALIVE_REJrecvPDU = 0;
     registres[i] -> estat = STATE_DISCON;
+    if(debug == 1){
+      printf("[DEBUG] -> REBUT: NOM: %s  MAC: %s ALEA: %s  DADES: %s\n",recvPDU.nomEquip, recvPDU.adresaMac,recvPDU.numAleat,recvPDU.Dades);
+      printf("[DEBUG] -> ENVIAT: PAQUET: ALIVE_REJ NOM: %s  MAC: %s ALEA: %s  DADES: %s\n",sendPDU.nomEquip, sendPDU.adresaMac,sendPDU.numAleat,sendPDU.Dades);
+    }
   }
   exit(0);
 }
@@ -648,6 +726,9 @@ void sendFile(int newTCPSock, struct PDU_TCP pdu_tcp, struct sockaddr_in tcpRecv
       while(pdu_tcp.tipusPacket == SEND_DATA){
         if(recvtcplen > 0){
           timed = time(NULL);
+          if(debug == 1){
+            printf("[DEBUG] -> REBUT: PAQUET: SEND_DATA NOM: %s  MAC: %s ALEA: %s  DADES: %s\n",pdu_tcp.nomEquip, pdu_tcp.adresaMac,pdu_tcp.numAleat,pdu_tcp.Dades);
+          }
           fprintf(f,"%s",pdu_tcp.Dades);
         }else if(time(NULL)-timed > 4){
           /*Si no es rep una */
@@ -659,6 +740,9 @@ void sendFile(int newTCPSock, struct PDU_TCP pdu_tcp, struct sockaddr_in tcpRecv
         recvtcplen = recvfrom(newTCPSock, &pdu_tcp, BUFSIZETCP, 0, (struct sockaddr *)&tcpRecvAdress, &addrlentcp);
       }
       if(pdu_tcp.tipusPacket == SEND_END){
+        if(debug == 1){
+          printf("[DEBUG] -> REBUT: PAQUET: SEND_END NOM: %s  MAC: %s ALEA: %s  DADES: %s\n",pdu_tcp.nomEquip, pdu_tcp.adresaMac,pdu_tcp.numAleat,pdu_tcp.Dades);
+        }
         printf("Finalització recepció arxiu\n");
         close(newTCPSock);
         fclose(f);
@@ -691,9 +775,15 @@ void getFile(int newTCPSock, struct PDU_TCP pdu_tcp, struct sockaddr_in tcpRecvA
     while ((nbytes = getline(&toSend, &len, f)) != -1){
       makeTCPPDU(GET_DATA, serverInfo, &pdu_tcp, alea, toSend);
       sendto(newTCPSock, &pdu_tcp, BUFSIZETCP,0, (struct sockaddr *)&tcpRecvAdress, addrlen);
+      if(debug == 1){
+        printf("[DEBUG] -> ENVIANT: PAQUET: GET_DATA NOM: %s  MAC: %s ALEA: %s  DADES: %s\n",pdu_tcp.nomEquip, pdu_tcp.adresaMac,pdu_tcp.numAleat,pdu_tcp.Dades);
+      }
     }
     makeTCPPDU(GET_END, serverInfo, &pdu_tcp, alea, endmsg);
     sendto(newTCPSock, &pdu_tcp, BUFSIZETCP,0, (struct sockaddr *)&tcpRecvAdress, addrlen);
+    if(debug == 1){
+      printf("[DEBUG] -> ENVIANT: PAQUET: GET_END NOM: %s  MAC: %s ALEA: %s  DADES: %s\n",pdu_tcp.nomEquip, pdu_tcp.adresaMac,pdu_tcp.numAleat,pdu_tcp.Dades);
+    }
     printf("Finalitzat enviament de fitxer de configuració\n");
     fclose(f);
   }

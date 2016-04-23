@@ -46,7 +46,7 @@ Jordi Ricard Onrubia Palacios % Your name
 \begin{minipage}{0.4\textwidth}
 \begin{flushright} \large
 \emph{Professor:} \\
-Enric Guitart % Supervisor's Name
+Enric Guitart Baraut % Supervisor's Name
 \end{flushright}
 \end{minipage}\\[4cm]
 
@@ -90,7 +90,7 @@ En la següent figura es mostra un diagrama amb el seu funcionament principal.
 \end{figure}
 \newpage
 \subsection{Protocol TCP}
-El protocol TCP(\textit{}) es utilitzat per a realitzar el procés de enviament i petició del arxiu de configuració del client cap al servidor.
+El protocol TCP(\textit{Transmission Control Protocol}) es utilitzat per a realitzar el procés de enviament i petició del arxiu de configuració del client cap al servidor.
 \\\\
 En la següent figura es mostra un diagrama amb el seu funcionament principal.
 \\\\
@@ -127,6 +127,7 @@ Compilat en: Linux versió 4.2.0 gcc versió 5.2.1.\\
 Comanda utilitzada: gcc -ansi -pedantic -Wall.\\
 El servidor no utilitza Protocol UDP més que per a controlar els estats del client per tant el protocol és el mateix que l'indicat en la figura \ref{fig:ProtcolUDP}
 \subsection{Protocol TCP}
+Com en al client, el protocol TCP també hi és present al servidor, el procés és el mateix amb la diferencia que el servidor ha de escoltar i acceptar o denegar les conexions que arribin per part dels clients.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{ServidorTCP.png}
@@ -136,6 +137,20 @@ El servidor no utilitza Protocol UDP més que per a controlar els estats del cli
 \newpage
 
 \subsection{Estructura}
+El servidor al contrari del client no te diferentes fases ja que ha de realitzar les accions de rebre registres, contestar als missatges de manteniment de comunicació, rebre o enviar els fitxers de configuració en cas de que un client faci una petició i atendre a les comandes rebudes per consola totes a la vegada, per tant el dividim en processos.\\\\
+Processos:
+
+\begin{enumerate}
+\item
+Prepara el servidor per a iniciar-se i es queda a la espera de rebre comandes, com es pot observar a la figura \ref{fig:server} la comunicació la comporten les funcions numerades del 1 al 7.
+\item
+Creará el socket UDP i creará dos fills mès, la comunicació la comporten les funcions numerades del 8 i 9.
+\item
+Encarregat de rebre peticions i crear nous processos per a realitzar-les, aquests processos creats moriràn un cop finalitzada la petició, la comunicació la comporten les funcions numerades del 14 al 28.
+\item
+Comprova cada segón la temporització dels 'ALIVES' dels equips registrats.
+\end{enumerate}
+\newpage
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{server.png}
@@ -166,11 +181,13 @@ Execució:
 \item Executar el fitxer server generat per Makefile després de la seva execució de la següent manera: ./server
 \item Si el fitxer server no pot ser executat per falta de permisos executar la comanda: chmod +x server.
 \end{itemize}
+\newpage
 \subsection{Problemes i solucions trobats en el desenvolupament}
 \subsubsection*{Client}
+\justify
 \begin{enumerate}
 \item Bloqueig del programa per part del recvfrom, recvfrom és una funció què s'encarrega de rebre el missatge rebut pel socket, la solució aplicada va ser posar el timeout a 0 fent-la així no bloquejant.
-\item Senyal SIGTERM ignorada, la solució aplicada va ser enviar-la contínuament amb un bucle infinit.
+\item Senyal SIGTERM utilitzada per finalitzar el client a l'hora de rebre 'quit' ignorada, la solució aplicada va ser fer enviaments fins que un d'aquests no sigui ignorat i finalitzi el client.
 \item Llançament de excepcions per part de Python a l'hora de detectar per teclat un ctrl-c, la solució aplicada va ser tractar la lectura del teclat amb un try except ignorant les interrupcions de teclat.
 \end{enumerate}
 \subsection*{Servidor}
@@ -178,6 +195,20 @@ Execució:
 \item Problema d'accedir i actualitzar les dades dels clients des d'altres processos. La solució ha estat fer un mmap utilitzant la llibreria sys/man.h.
 \item Si els dos primers ''ALIVES'' la temporització no arriba a agafar el tercer ''ALIVE'' en cas que fos enviat, ja que aquest arriba just en el moment en què el servidor ha desconnectat al client. La solució ha estat aplicar un temporitzador per tal de què el servidor només comprovi els estats dels clients cada segon en lloc de contínuament, a més a més, es permet que el temps en què haguera d'arribar ''l'ALIVE'' sigui més gran que l'especificat, exactament 1 segon més.
 \end{enumerate}
+	\subsection{Aspectes a tenir en compte}
+	\subsubsection*{Client}
+\begin{itemize}
+\item Qualsevol error en l'apartat de registre el fará desconnectar completament, no iniciarà un altre procés de registre.
+\item A l'hora de cridar el progrma amb '-c' està permés introduir noms de fitxer erronis, però, a l'hora de fer la lectura donarà missatge de error i es tancarà el servidor, si es crida el programa amb '-f' i s'introdueix un nom de fitxer erroni no es permetrá realitzar l'intercanvi del fitxer de configuració amb el servidor.
+\end{itemize} 
+	 \subsubsection*{Servidor}
+\begin{itemize}
+\item A l'hora de cridar el servidor amb '-u' o '-c' està permés introduir noms de fitxer erronis, però, a l'hora de fer la lectura donarà missatge de error i es tancarà el servidor.
+\item Un equip que s'ha desconectat per qualsevol motiu no pot tornar a registrar-se instantaneament, ha de passar un segón.
+\item Per poder realitzar 'get-conf' o 'send-conf' és necessari que el client hagi realitzat satisfactoriament el primer 'ALIVE'.
+\item Si es rep una petició de enviament de fitxer de configuració i aquest no existeix no s'enviará al client.
+\end{itemize}	
+	
 	\subsection{Llistat de figures}
 \listoffigures{}
 \newpage

@@ -6,8 +6,9 @@
 \contentsline {section}{\numberline {2}Servidor}{5}{section.2}
 \contentsline {subsection}{\numberline {2.1}Protocol TCP}{5}{subsection.2.1}
 \contentsline {subsection}{\numberline {2.2}Estructura}{6}{subsection.2.2}
-\contentsline {section}{\numberline {3}Anexe}{7}{section.3}
-\contentsline {subsection}{\numberline {3.1}Execuci\IeC {\'o}}{7}{subsection.3.1}
-\contentsline {subsection}{\numberline {3.2}Problemes i solucions trobats en el desenvolupament}{7}{subsection.3.2}
-\contentsline {subsection}{\numberline {3.3}Llistat de figures}{8}{subsection.3.3}
-\contentsline {section}{\numberline {4}Bibliografia}{9}{section.4}
+\contentsline {section}{\numberline {3}Anexe}{8}{section.3}
+\contentsline {subsection}{\numberline {3.1}Execuci\IeC {\'o}}{8}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Problemes i solucions trobats en el desenvolupament}{9}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Aspectes a tenir en compte}{9}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Llistat de figures}{10}{subsection.3.4}
+\contentsline {section}{\numberline {4}Bibliografia}{11}{section.4}
